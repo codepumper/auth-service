@@ -1,7 +1,7 @@
 # Authentication Microservice
 
 ## Overview
-This microservice is a robust authentication and authorization solution for an algorithmic trading platform. It ensures secure user management, token validation, and role-based access control for seamless integration with other platform services, such as the API Gateway and Backtesting Engine.
+This microservice is an authentication and authorization solution. It ensures secure user management, token validation, and role-based access control for seamless integration with other microservices, such as the ab API Gateway microservice.
 
 ## Features
 
@@ -28,3 +28,14 @@ Endpoints:
   * Token Validation: Validates existing JWTs for inter-service communication.
 
 Protocol Support: Provides REST and optional gRPC endpoints for seamless service interoperability.
+
+### Possible improvements
+
+* Usage of stronger hashing algo (e.g., bcrypt/Argon2)
+* Short-lived tokens, secure storage, RS256/ES256 algorithms, token revocation.
+* Optional Permissions and role hierarchy.
+* API Security: Rate limiting, input validation.
+* Two-factor authentication for enhanced security.
+* Blacklist/whitelist for revoked tokens.
+* Db Practices: Indexing, schema design, encryption, secure connections.
+* Monitoring (Grafana?)
