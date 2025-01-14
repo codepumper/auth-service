@@ -6,7 +6,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/dgrijalva/jwt-go"
+	"github.com/golang-jwt/jwt/v4"
+	"github.com/joho/godotenv"
 )
 
 var (
@@ -15,9 +16,17 @@ var (
 )
 
 func loadSecret() {
+	err := godotenv.Load()
+	if err != nil {
+		fmt.Println("Error loading .env file")
+		return
+	}
+
 	secret := os.Getenv("JWT_SECRET")
 	if secret == "" {
 		fmt.Println("JWT_SECRET is not set in environment variables")
+	} else {
+		fmt.Println("JWT_SECRET successfully loaded")
 	}
 	jwtSecret = secret
 }
@@ -28,13 +37,19 @@ func GetSecretKey() string {
 }
 
 func GenerateJWT(email string) (string, error) {
-	jwtSecret := GetSecretKey()
+	jwtSecret := []byte(GetSecretKey())
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"email": email,
-		"exp":   time.Now().Add(time.Hour * 24).Unix(),
+		"exp":   time.Now().Add(time.Hour * 24).Unix(), // Set expiration time
 	})
-	return token.SignedString(jwtSecret)
+
+	signedToken, err := token.SignedString(jwtSecret)
+	if err != nil {
+		return "", fmt.Errorf("failed to sign token: %w", err)
+	}
+
+	return signedToken, nil
 }
 
 func ValidateJWT(tokenString string) bool {
@@ -45,7 +60,16 @@ func ValidateJWT(tokenString string) bool {
 	}
 
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
+		}
 		return []byte(jwtSecret), nil
 	})
-	return err == nil && token.Valid
+
+	if err != nil {
+		fmt.Printf("JWT validation error: %v\n", err)
+		return false
+	}
+
+	return token.Valid
 }
