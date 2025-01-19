@@ -6,8 +6,9 @@ import (
 	"time"
 
 	"auth-service/models"
-	auth "auth-service/proto"
 	"auth-service/utils"
+
+	"github.com/codepumper/protos/auth"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"

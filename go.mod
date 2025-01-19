@@ -5,9 +5,11 @@ go 1.23.4
 require (
 	go.mongodb.org/mongo-driver v1.17.2
 	golang.org/x/crypto v0.32.0
-	google.golang.org/grpc v1.69.2
+	google.golang.org/grpc v1.69.4
 	google.golang.org/protobuf v1.36.2
 )
+
+require github.com/codepumper/protos v0.0.0-20250113232123-cee0abd46a9c // indirect
 
 require (
 	github.com/golang-jwt/jwt/v4 v4.5.1

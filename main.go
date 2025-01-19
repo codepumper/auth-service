@@ -5,7 +5,8 @@ import (
 	"net"
 
 	"auth-service/handlers"
-	auth "auth-service/proto"
+
+	auth "github.com/codepumper/protos/auth"
 
 	"google.golang.org/grpc"
 )
