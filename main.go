@@ -5,7 +5,7 @@ import (
 	"net"
 
 	"auth-service/handlers"
-	"auth-service/proto"
+	auth "auth-service/proto"
 
 	"google.golang.org/grpc"
 )

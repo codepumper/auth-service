@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"auth-service/models"
-	"auth-service/proto"
+	auth "auth-service/proto"
 	"auth-service/utils"
 
 	"go.mongodb.org/mongo-driver/bson"
@@ -20,7 +20,7 @@ type AuthService struct {
 }
 
 func NewAuthService() *AuthService {
-	clientOptions := options.Client().ApplyURI("mongodb://localhost:27017")
+	clientOptions := options.Client().ApplyURI("mongodb://mongodb:27017")
 	client, err := mongo.Connect(context.Background(), clientOptions)
 	if err != nil {
 		log.Fatalf("Failed to connect to MongoDB: %v", err)
@@ -43,8 +43,8 @@ func (s *AuthService) Register(ctx context.Context, req *auth.RegisterRequest) (
 	}
 
 	user := models.User{
-		Email:    req.Email,
-		Password: hashedPassword,
+		Email:     req.Email,
+		Password:  hashedPassword,
 		CreatedAt: time.Now(),
 	}
 	_, err = s.db.InsertOne(ctx, user)
